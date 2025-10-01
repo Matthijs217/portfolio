@@ -2,7 +2,19 @@
 
 <video src="newyork4_smooth.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
 <h1 class="name">Matthijs</h1>
-<div id="container"></div>
+<div id="container">
+    <div class="title">
+        <h2>About me</h2>
+    </div>
+
+    <h3>Education</h3>
+    <h3>Travel</h3>
+    <h3>Matthijs</h3>
+    <article>
+        <h4>Welcome to my website</h4>
+        <p>Scroll down to see the effect in action!</p>
+    </article>
+</div>
 <style>
     @font-face {
         font-family: 'Gotham';
@@ -22,12 +34,29 @@
     }
     .name {
         position: fixed;
-        top: 45%;
+        top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -70%);
         color: #F6FF00;
         font-size: 4rem;
         font-family: 'Gotham', 'Arial', sans-serif;
+        z-index: 10;
+        
+        /* CSS scroll-driven animation */
+        animation: fadeOutOnScroll linear forwards;
+        animation-timeline: scroll(root);
+        animation-range: 200px 600px;
+    }
+    
+    @keyframes fadeOutOnScroll {
+        0% {
+            opacity: 1;
+            transform: translate(-50%, -70%);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -150%);
+        }
     }
     #container {
         height: 500vh;
@@ -80,7 +109,7 @@
                 {
                     currentTime: video.duration || 1
                 }
-            );
+            );  
         });
 
         if (window["fetch"]) {
