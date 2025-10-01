@@ -12,12 +12,14 @@
         height: 500vh;
     }
 </style>
-<video src="newyork4.av1.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
+<video src="newyork4.mov" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
 
 <div id="container"></div>
 
 <script>
     import { onMount } from 'svelte';
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
         
     onMount(() => {
         console.clear();
