@@ -1,4 +1,38 @@
 
+
+<video src="newyork4_smooth.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
+<h1 class="name">Matthijs</h1>
+<div id="container"></div>
+<style>
+    @font-face {
+        font-family: 'Gotham';
+        src: url('/fonts/GothamBold.otf') format('opentype');
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+    }  
+    .video-background {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+    .name {
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #F6FF00;
+        font-size: 4rem;
+        font-family: 'Gotham', 'Arial', sans-serif;
+    }
+    #container {
+        height: 500vh;
+    }
+</style>
 <script>
     import { onMount } from 'svelte';
     import { gsap } from 'gsap';
@@ -67,20 +101,3 @@
         }
     });
 </script>
-<style>
-    .video-background {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        min-width: 100%;
-        min-height: 100%;
-        transform: translate(-50%, -50%);
-    }
-
-    #container {
-        height: 500vh;
-    }
-</style>
-<video src="newyork4_smooth.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
-
-<div id="container"></div>
