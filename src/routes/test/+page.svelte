@@ -12,7 +12,7 @@
         height: 500vh;
     }
 </style>
-<video src="newyork4.mov" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
+<video src="newyork4_smooth.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
 
 <div id="container"></div>
 
