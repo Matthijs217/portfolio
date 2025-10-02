@@ -1,203 +1,142 @@
+<script>
+    import { onMount } from "svelte";
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    let canvas;
+    let context;
+    let images = [];
+    let frameCount = 200;
+    let currentFrame = (index) =>
+        `/imgarray/ezgif-frame-${String(index).padStart(3, "0")}.jpg`;
+    let imgSeq = { frame: 0 };
+
+    onMount(() => {
+        context = canvas.getContext("2d");
+
+        // preload alle frames
+        for (let i = 1; i <= frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        // eerste frame tekenen
+        images[0].onload = () =>
+            context.drawImage(images[0], 0, 0, canvas.width, canvas.height);
+
+        // GSAP ScrollTrigger
+        gsap.to(imgSeq, {
+            frame: frameCount - 1,
+            snap: "frame",
+            ease: "none",
+            scrollTrigger: {
+                scrub: true,
+                pin: true,
+                trigger: canvas,
+                end: "+=3000", // lengte van scroll bepalen
+            },
+            onUpdate: () => render(),
+        });
+    });
+
+    function render() {
+        const img = images[imgSeq.frame];
+        if (img && context) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+    }
+</script>
+
+<main>
+    {#if typeof window === "undefined"}
+        <!-- SSR fallback -->
+        <img
+            src="/imgarray/ezgif-frame-001.jpg"
+            alt="New York"
+            style="width:100%; height:auto;"
+        />
+    {:else}
+        <canvas bind:this={canvas} width={1920} height={1080}></canvas>
+    {/if}
+
+    <h1 class="name">Matthijs</h1>
+    <div id="container">
+        <main>
+            <div class="title">
+                <h2>About me</h2>
+            </div>
+            <div class="content">
+                <h3>AD Frontend Design & Development</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <h3>America</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <h3>Hobbys</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#travel">Travel</a></li>
+                    <li><a href="#matthijs">Matthijs</a></li>
+                </ul>
+            </nav>
+        </main>
+    </div>
+</main>
 
 
-<video src="newyork4_smooth.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video>
-<h1 class="name">Matthijs</h1>
-<div id="container">
-    <main>
-        <div class="title">
-            <h2>About me</h2>
-        </div>
-        <div class="content">
-            <h3>AD Frontend Design & Development</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-            <h3>America</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-            <h3>Hobbys</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#travel">Travel</a></li>
-                <li><a href="#matthijs">Matthijs</a></li>
-            </ul>
-        </nav>
-    </main>
-</div>
 <style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: black;
+        overflow-x: hidden;
+    }
     @font-face {
-        font-family: 'Gotham';
-        src: url('/fonts/GothamBold.otf') format('opentype');
+        font-family: "Gotham";
+        src: url("/fonts/GothamBold.otf") format("opentype");
         font-weight: bold;
         font-style: normal;
         font-display: swap;
-    }  
-    #container {
-        height: 500vh;
     }
-    main {
-        height:70vh;
+
+    canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
         width: 100%;
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: 1fr 2fr;
-        grid-template-areas:
-            "title title"
-            "nav nav"
-            "content content"
-        ;
-    }
-    .video-background {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        min-width: 100%;
-        min-height: 100%;
-        transform: translate(-50%, -50%);
+        height: 100vh;
+        object-fit: cover;
         z-index: -1;
     }
-    .name {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -70%);
-        color: #F6FF00;
-        font-size: 4rem;
-        font-family: 'Gotham', 'Arial', sans-serif;
-        z-index: 10;
-        
-        /* CSS scroll-driven animation */
-        animation: fadeOutOnScroll linear forwards;
-        animation-timeline: scroll(root);
-        animation-range: 200px 600px;
-    }
-    @keyframes fadeOutOnScroll {
-        0% {
-            opacity: 1;
-            transform: translate(-50%, -70%);
-        }
-        100% {
-            opacity: 0;
-            transform: translate(-50%, -150%);
-        }
-    }
-    .title {
-        grid-area: title;
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        padding-left: 1rem;
-        h2 {
-            margin: 0;
-            font-family: 'Gotham', 'Arial', sans-serif;
-            font-size: 3rem;
-            color: #F6FF00;
-        }
-    }
-    .content {
-        position: relative;
-        margin-left: 1rem;
-        padding: 1em;
-        width: 80vw;
-        color: rgb(0, 0, 0);
-        font-family: 'Gotham', 'Arial', sans-serif;
-        background-color: rgb(255, 255, 255);
-        grid-area: content;
-    }
-    nav {
-        grid-area: nav;
-        display: flex;
-        flex-direction: column;
-        padding-left: 1rem;
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            li {
-                a {
-                    text-decoration: none;
-                    color: #F6FF00;
-                    font-family: 'Gotham', 'Arial', sans-serif;
-                    font-size: 1.5rem;
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
-        }
-    }
-    
 </style>
-<script>
-    import { onMount } from 'svelte';
-    import { gsap } from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-        
-    onMount(() => {
-        console.clear();
-
-        const video = document.querySelector(".video-background");
-        let src = video.currentSrc || video.src;
-        console.log(video, src);
-
-        function once(el, event, fn, opts) {
-            var onceFn = function (e) {
-                el.removeEventListener(event, onceFn);
-                fn.apply(this, arguments);
-            };
-            el.addEventListener(event, onceFn, opts);
-            return onceFn;
-        }
-
-        once(document.documentElement, "touchstart", function (e) {
-            video.play();
-            video.pause();
-        });
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        let tl = gsap.timeline({
-            defaults: { duration: 1 },
-            scrollTrigger: {
-                trigger: "#container",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true
-            }
-        });
-
-        once(video, "loadedmetadata", () => {
-            tl.fromTo(
-                video,
-                {
-                    currentTime: 0
-                },
-                {
-                    currentTime: video.duration || 1
-                }
-            );  
-        });
-
-        if (window["fetch"]) {
-            fetch(src)
-                .then((response) => response.blob())
-                .then((response) => {
-                    var blobURL = URL.createObjectURL(response);
-
-                    var t = video.currentTime;
-                    once(document.documentElement, "touchstart", function (e) {
-                        video.play();
-                        video.pause();
-                    });
-
-                    video.setAttribute("src", blobURL);
-                    video.currentTime = t + 0.01;
-                });
-        }
-    });
-</script>
