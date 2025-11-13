@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PortableText from "../components/PortableText.astro";
+import { loadQuery } from "../sanity/lib/load-query";
+
+const { data: page } = await loadQuery<any>({
+  query: `*[_type == "page" && slug.current == "about-me"][0]{
+    title,
+    content
+  }`,
+});
+---
+
+<Layout title={page?.title || "About Me"}>
+  <main>
+    <h1>{page?.title || "About Me"}</h1>
+    {page?.content && <PortableText portableText={page.content} />}
+  </main>
+</Layout>

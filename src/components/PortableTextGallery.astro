@@ -1,0 +1,57 @@
+---
+import { urlForImage } from "../sanity/lib/url-for-image";
+
+const { images = [], display = "stacked", zoom = false } = Astro.props.node;
+---
+
+<div class:list={["gallery", `gallery--${display}`]}>
+  {images.map((img: any) => {
+    const url = urlForImage(img.asset).width(315).height(320).url();
+    const webpUrl = urlForImage(img.asset).width(315).height(320).format("webp").url();
+    
+    return (
+      <picture>
+        <source srcset={webpUrl} type="image/webp" />
+        <img src={url} alt={img.alt || ""} width="400" height="320" />
+      </picture>
+    );
+  })}
+</div>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .gallery {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  picture {
+    width: 100%;
+  }
+  
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+</style>

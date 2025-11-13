@@ -2,6 +2,7 @@
 // ./src/pages/post/[slug].astro
 import type { SanityDocument } from "@sanity/client";
 import { loadQuery } from "../../sanity/lib/load-query";
+import { urlForImage } from "../../sanity/lib/url-for-image";
 import PortableText from "../../components/PortableText.astro";
 
 export async function getStaticPaths() {
@@ -20,11 +21,37 @@ export async function getStaticPaths() {
 
 const { params } = Astro;
 
-const { data: post } = await loadQuery<{ title: string; body: any[] }>({
-  query: `*[_type == "post" && slug.current == $slug][0]`,
+const { data: post } = await loadQuery<{ 
+  title: string; 
+  body: any[];
+  mainImage?: {
+    asset: any;
+    alt?: string;
+  };
+}>({
+  query: `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    body[]{
+      ...,
+      _type == "image" => {
+        ...,
+        asset->
+      }
+    },
+    mainImage{
+      ...,
+      asset->
+    }
+  }`,
   params,
 });
 ---
 
-<h1>A post about {post.title}</h1>
+<h1>{post.title}</h1>
+{post.mainImage && (
+  <img 
+    src={urlForImage(post.mainImage.asset).width(800).url()} 
+    alt={post.mainImage.alt || post.title}
+  />
+)}
 <PortableText portableText={post.body} />
