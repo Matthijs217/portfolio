@@ -4,7 +4,11 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Home">
 
-	<section class="panel panel-1">HOME</section>
+	<section class="panel panel-1">
+		<h1>Matthijs</h1>
+		<h2>Portfolio</h2>
+		<h2>Frontend Developer</h2>
+	</section>
 	<section class="panel panel-2">ABOUT</section>
 
 </Layout>
@@ -12,6 +16,7 @@ import Layout from "../layouts/Layout.astro";
 <style is:global>
 	body {
 		background-color: #000000;
+		overflow: auto;
 	}
 </style>
 
@@ -19,12 +24,33 @@ import Layout from "../layouts/Layout.astro";
 	main {
 		height: 100vh;
 	}
+	h1 {
+		font-size: 6rem;
+		color: white;
+		grid-row: 2;
+		position: absolute;
+		bottom: 30vh;
+		left: 4vw;
+	}
+	h2 {
+		font-size: 2rem;
+		color: white;
+		position: absolute;
+		left: 5vw;
+		&:first-of-type {
+			bottom: 43vh;
+		}
+		&:nth-of-type(2) {
+			bottom: 28vh;
+		}
+	}
 	.panel {
 		position: sticky;
 		top: 0;
 		height: 100vh;
 	}
 	.panel-1 {
+		display: grid;
 	}
 	.panel-2 {
 		background: #222;

@@ -1,34 +1,224 @@
+<script>
+document.querySelector('.menu-button').addEventListener('click', function(ev) {
+  document.querySelector('.header-nav').classList.add('target')
+  document.querySelector('.header-nav-container').classList.add('show')
+  document.querySelector('.menu-close').classList.add('show')
+  document.querySelector('.menu-button').classList.add('hide')
+})
+
+// Hamburger menu, als je op kruisje klikt dan ->
+document.querySelector('.menu-close').addEventListener('click', function(ev) {
+  document.querySelector('.header-nav').classList.remove('target')
+  document.querySelector('.header-nav-container').classList.remove('show')
+  document.querySelector('.menu-close').classList.remove('show')
+})
+</script>
+
 <header>
-    <div class="header-container">
-        <div>
-            <p>Matthijs ten Brink</p>
-            <p>@Matthijs_tb7</p>
+    <nav class="nav-list">
+        <a class="menu-button" href="#footer-nav">
+            <svg width="15" height="15" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" class="">
+            <title>Naar het menu</title>
+            <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
+            </svg>
+            MENU
+        </a>
+        <div class="header-nav-container">
+            <section class="header-nav">
+                <ul class="nav-list-header">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/work">Work</a></li>
+                    <li><a href="/about-me">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </section>
+            <a class="menu-close" href="#">ｘ</a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/work">Work</a></li>
-                <li><a href="/about-me">About</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
+        <div class="person-info">
+            <p>Matthijs ten Brink</p>
+            <p>Matthijs_tb7</p>
+        </div>
+        <a class="nav-links" href="/home">HOME</a>
+        <a class="nav-links" href="/work">WORK</a>
+        <a class="nav-links" href="/about-me">ABOUT</a>
+        <a class="nav-links" href="/contact">CONTACT</a>
+    </nav>
+    
 </header>
 
 <style>
     header {
-        position: relative;
-        z-index: 1000;
-        /* backdrop-filter: blur(10px); */
-    }
-    .header-container {
         position: fixed;
         top: 0;
         width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
         background-color: transparent;
+        z-index: 999;
+        padding: 36px 18px 46px 18px;
+    }
+
+    /* HELE NAV */
+
+    .nav-list {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        @media (min-width: 820px) {
+            gap: 5em;
+            margin-right: 2em;
+        }
+
+        & .menu-button {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: .25em;
+            letter-spacing: 0px;
+            font-weight: 600;
+            font-size: 1.5rem;
+            position: absolute;
+            right: 5vw;
+            @media (min-width: 820px) {
+                display: none;
+                position:static;
+            }
+
+            & svg {
+                height: 20px;
+                width: 20px;
+                fill: white;
+            }
+            .hide {
+                display: none;
+            }
+        }
+        & .person-info {
+            color: white;
+            margin-right: auto;
+            font-size: 1.25rem;
+            & p:nth-of-type(2) {
+                color: rgb(72, 72, 72);
+            }
+        }
+        & .nav-links {
+            color: white;
+            display: none;
+            font-size: 2rem;
+
+            &:hover {
+                transform: scale(1.15);
+            }
+
+            @media (min-width: 820px) {
+                display: block;
+            }
+        }
+
+        & .contact-link {
+            color: white;
+            font-weight: 900;
+            text-decoration: none;
+            border: none;
+            font-size: 16px;
+        }
+    }
+
+
+    /* DIV OM BURGER MENU */
+
+    .header-nav-container {
+        @media (min-width: 820px) {
+            appearance: none;
+            display: none;
+            height: 0px;
+            width: 0px;
+        }
+
+        & .menu-close {
+            color: white;
+            font-size: 2em;
+            display: none;
+            position: fixed;
+            right: 5vw;
+            top: 4vh;
+            text-decoration: none;
+            z-index: 999;
+
+            &.show {
+                display: block;
+            }
+
+            & ::after {
+                content: '';
+                background: rgba(0, 0, 0, .6);
+                position: absolute;
+                left: 100%;
+                width: 100vw;
+                height: 100vh;
+            }
+        }
+
+        &.show {
+            &::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100vw;
+                background-color: rgba(25, 25, 25, 0.605);
+            }
+        }
+    }
+
+    /* BURGER MENU NAV */
+
+    .nav-list-header {
+        margin-top: 3em;
+        display: flex;
+        flex-direction: column;
+        height: 50vh;
+        list-style-type: none;
+
+        & li {
+            & a {
+                justify-content: left;
+                padding-left: .1em;
+                font-size: 7em;
+                font-weight: 900;
+                color: var(--text-color-light);
+                text-transform: uppercase;
+                line-height: 1.1;
+                letter-spacing: -8px;
+                color: rgba(255, 255, 255, 0.938);
+            }
+        }
+    }
+
+
+    /* BURGER MENU SECTION */
+    .header-nav {
+        z-index: 888;
+        position: fixed;
+        inset: 0 50% 0 0;
+        right: 0;
+        transition: .5s cubic-bezier(.4,0,.2,1);
+        transform: translateX(-100%);
+        background-color: rgb(17 17 17/ 1);
+        visibility: hidden;
+
+        & h2 {
+            margin-top: 2em;
+            padding-left: 16px;
+            color: white;
+        }
+
+        &:target,
+        &.target {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
     }
 </style>
