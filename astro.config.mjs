@@ -10,10 +10,20 @@ export default defineConfig({
     sanity({
       projectId: 'r3k6w9b9',
       dataset: 'production',
-      useCdn: false, // See note on using the CDN
+      useCdn: true, // Enable CDN for better performance
       apiVersion: "2025-11-13", // insert the current date to access the latest version of the API
       studioBasePath: '/studio' // If you want to access the Studio on a route
     }),
     react(),
   ],
+  vite: {
+    build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true, // Remove console.logs in production
+        },
+      },
+    },
+  },
 });

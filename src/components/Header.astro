@@ -1,44 +1,41 @@
 <script>
-document.querySelector('.menu-button').addEventListener('click', function(ev) {
-  document.querySelector('.header-nav').classList.add('target')
-  document.querySelector('.header-nav-container').classList.add('show')
-  document.querySelector('.menu-close').classList.add('show')
-  document.querySelector('.menu-button').classList.add('hide')
-})
+const menuButton = document.querySelector('.menu-button')
+const menuLabel = menuButton.querySelector('.menu-button-label')
+const headerNav = document.querySelector('.header-nav')
+const headerNavContainer = document.querySelector('.header-nav-container')
 
-// Hamburger menu, als je op kruisje klikt dan ->
-document.querySelector('.menu-close').addEventListener('click', function(ev) {
-  document.querySelector('.header-nav').classList.remove('target')
-  document.querySelector('.header-nav-container').classList.remove('show')
-  document.querySelector('.menu-close').classList.remove('show')
+menuButton.addEventListener('click', function (ev) {
+  ev.preventDefault()
+
+  const isOpen = headerNav.classList.toggle('target')
+  headerNavContainer.classList.toggle('show', isOpen)
+  menuButton.classList.toggle('show', isOpen)
+
+  menuLabel.textContent = isOpen ? 'CLOSE' : 'MENU'
 })
 </script>
 
 <header>
     <nav class="nav-list">
         <a class="menu-button" href="#footer-nav">
-            <svg width="15" height="15" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" class="">
             <title>Naar het menu</title>
-            <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
-            </svg>
-            MENU
+            <span class="menu-button-label">MENU</span>
         </a>
         <div class="header-nav-container">
             <section class="header-nav">
                 <ul class="nav-list-header">
-                    <li><a href="/home">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="/work">Work</a></li>
                     <li><a href="/about-me">About</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
             </section>
-            <a class="menu-close" href="#">ｘ</a>
         </div>
         <div class="person-info">
             <p>Matthijs ten Brink</p>
             <p>Matthijs_tb7</p>
         </div>
-        <a class="nav-links" href="/home">HOME</a>
+        <a class="nav-links" href="/">HOME</a>
         <a class="nav-links" href="/work">WORK</a>
         <a class="nav-links" href="/about-me">ABOUT</a>
         <a class="nav-links" href="/contact">CONTACT</a>
@@ -79,6 +76,7 @@ document.querySelector('.menu-close').addEventListener('click', function(ev) {
             font-size: 1.5rem;
             position: absolute;
             right: 5vw;
+            z-index: 1000;
             @media (min-width: 820px) {
                 display: none;
                 position:static;
@@ -89,8 +87,8 @@ document.querySelector('.menu-close').addEventListener('click', function(ev) {
                 width: 20px;
                 fill: white;
             }
-            .hide {
-                display: none;
+            &.show {
+                z-index: 1000;
             }
         }
         & .person-info {
@@ -178,23 +176,20 @@ document.querySelector('.menu-close').addEventListener('click', function(ev) {
         margin-top: 3em;
         display: flex;
         flex-direction: column;
-        height: 50vh;
         list-style-type: none;
-
-        & li {
-            & a {
-                justify-content: left;
-                padding-left: .1em;
-                font-size: 7em;
-                font-weight: 900;
-                color: var(--text-color-light);
-                text-transform: uppercase;
-                line-height: 1.1;
-                letter-spacing: -8px;
-                color: rgba(255, 255, 255, 0.938);
-            }
+        & a {
+            justify-content: left;
+            padding-left: .1em;
+            font-size: 7em;
+            font-weight: 900;
+            color: var(--text-color-light);
+            text-transform: uppercase;
+            line-height: 1.1;
+            letter-spacing: -8px;
+            color: rgba(255, 255, 255, 0.938);
         }
     }
+   
 
 
     /* BURGER MENU SECTION */
@@ -204,7 +199,7 @@ document.querySelector('.menu-close').addEventListener('click', function(ev) {
         inset: 0 50% 0 0;
         right: 0;
         transition: .5s cubic-bezier(.4,0,.2,1);
-        transform: translateX(-100%);
+        transform: translateX(100%);
         background-color: rgb(17 17 17/ 1);
         visibility: hidden;
 
@@ -219,6 +214,32 @@ document.querySelector('.menu-close').addEventListener('click', function(ev) {
             transform: translateX(0);
             visibility: visible;
         }
-
+    }
+    .header-nav.target {
+        ul {
+            & li {
+                opacity: 0;
+                transform: translateY(80px);
+                animation: fadeInUp 0.3s ease forwards;
+                &:nth-of-type(1) {
+                    animation-delay: 0.1s;
+                }
+                &:nth-of-type(2) {
+                    animation-delay: 0.2s;
+                }
+                &:nth-of-type(3) {
+                    animation-delay: 0.3s;
+                }
+                &:nth-of-type(4) {
+                    animation-delay: 0.4s;
+                }
+            }
+        }
+    } 
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
