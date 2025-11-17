@@ -1,0 +1,81 @@
+---
+interface Props {
+  title: string;
+  image: string;
+  imageAlt: string;
+  category: string;
+  date: string;
+  datetime: string;
+}
+
+const { title, image, imageAlt, category, date, datetime } = Astro.props;
+---
+
+<details class="project" open>
+  <summary>{title}</summary>
+  <img src={image} alt={imageAlt}>
+  <div class="work-info">
+    <p>{category}</p>
+    <p class="date"><time datetime={datetime}>{date}</time></p>
+  </div>
+</details>
+
+<style>
+  details {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+	margin-bottom: 1rem;
+  }
+
+  details .work-info {
+    margin-top: .25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+	& .date {
+	  color: var(--border-color);
+	}
+  }
+
+  @media (min-width: 400px) {
+    details .work-info {
+      flex-direction: row;
+    }
+  }
+
+  details summary {
+    list-style-type: none;
+    position: relative;
+    display: flex;
+    text-transform: uppercase;
+  }
+
+  details summary::after {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+  }
+
+  details[open] summary {
+    margin-bottom: .5rem;
+  }
+
+  details[open]:hover summary::after {
+    transform: rotate(90deg);
+  }
+
+  details:hover summary::after {
+    transform: rotate(45deg);
+  }
+
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  details > summary::after {
+    content: url(/src/assets/Arrow.svg);
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    transition: transform 0.3s ease;
+  }
+</style>
