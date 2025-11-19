@@ -5,6 +5,25 @@ import { urlForImage } from "../sanity/lib/url-for-image";
 import Watchall from "../components/Watchall.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 
+// Query to get projects from CMS
+const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc)[0...3]{
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  body
+}`;
+
+const { data: posts } = await loadQuery<Array<{
+  title: string;
+  slug: string;
+  mainImage: { asset: any; alt?: string };
+  publishedAt: string;
+  body: any;
+}>>({
+  query: POSTS_QUERY,
+});
+
 // Query to get the first 5 images from all galleries
 const GALLERY_IMAGES_QUERY = `*[_type == "post" || _type == "page"]{
   "allImages": content[_type == "gallery"][].images[]{
@@ -96,30 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
       <h3>Work</h3>
       <Watchall />
     </div>
-    <ProjectCard 
-      title="Dutch Digital Agencies"
-      image="/src/assets/dda-background.png"
-      imageAlt="website screenshot dda"
-      category="Development / Projecten /"
-      date="1 oktober, 2025"
-      datetime="2025-10-01"
-    />
-    <ProjectCard 
-      title="Q42"
-      image="/src/assets/dda-background.png"
-      imageAlt="website screenshot dda"
-      category="Development / Projecten /"
-      date="1 oktober, 2025"
-      datetime="2025-10-01"
-    />
-    <ProjectCard 
-      title="Bijlmer Chronicles"
-      image="/src/assets/dda-background.png"
-      imageAlt="website screenshot dda"
-      category="Development / Projecten /"
-      date="1 oktober, 2025"
-      datetime="2025-10-01"
-    />
+    {posts && posts.map((post) => (
+      <ProjectCard 
+        title={post.title}
+        image={post.mainImage ? urlForImage(post.mainImage.asset).width(1200).url() : '/src/assets/dda-background.png'}
+        imageAlt={post.mainImage?.alt || post.title}
+        category="Development / Projecten /"
+        date={new Date(post.publishedAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+        datetime={post.publishedAt}
+      />
+    ))}
 
     <div class="section-title">
       <h3>About me</h3>

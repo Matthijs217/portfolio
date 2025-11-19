@@ -20,7 +20,7 @@
 body {
   font-family: 'Antonio-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
-  color: var(--secondary-color);
+  color: white;
   background-color: var(--main-color);
 }
 
@@ -30,7 +30,7 @@ a {
 }
 
 img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   display: block;
 }
