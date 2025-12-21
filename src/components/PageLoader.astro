@@ -1,0 +1,118 @@
+---
+---
+
+<div class="page-loader">
+    <div class="loader-progress">
+        <div class="loader-bar"></div>
+    </div>
+    <div class="loader-overlay"></div>
+</div>
+
+<script>
+    import { gsap } from 'gsap';
+
+    const loader = document.querySelector('.page-loader');
+    const loaderBar = document.querySelector('.loader-bar');
+    const loaderOverlay = document.querySelector('.loader-overlay');
+    const body = document.body;
+
+    // Voorkom scrollen tijdens laden
+    body.style.overflow = 'hidden';
+
+    // Timeline voor de loading animatie
+    const tl = gsap.timeline({
+        onComplete: () => {
+            // Verwijder de loader uit de DOM na animatie
+            loader?.remove();
+            // Herstel scrollen
+            body.style.overflow = 'auto';
+        }
+    });
+
+    // Animeer de progress bar
+    tl.to(loaderBar, {
+        width: '100%',
+        duration: 1.5,
+        ease: 'power2.inOut'
+    })
+    // Fade out de progress bar
+    .to('.loader-progress', {
+        opacity: 0,
+        duration: 0.3
+    })
+    // Animeer de overlay naar boven
+    .to(loaderOverlay, {
+        yPercent: -100,
+        duration: 0.8,
+        ease: 'power3.inOut'
+    }, '-=0.1')
+    // Fade in de content
+    .from('main', {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: 'power2.out'
+    }, '-=0.4')
+    .from('header', {
+        opacity: 0,
+        y: -20,
+        duration: 0.5,
+        ease: 'power2.out',
+        // Belangrijk: verwijder inline transform na animatie zodat
+        // position: fixed elementen (zoals het burger-menu) weer
+        // ten opzichte van de viewport blijven i.p.v. het header-element.
+        onComplete: () => gsap.set('header', { clearProps: 'transform' })
+    }, '-=0.5');
+</script>
+
+<style>
+    .page-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        pointer-events: none;
+    }
+
+    .loader-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #111111;
+        z-index: 9998;
+    }
+
+    .loader-progress {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 3px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 9999;
+    }
+
+    .loader-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ffffff, #888888);
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .loader-progress {
+            width: 200px;
+            height: 2px;
+        }
+    }
+</style>

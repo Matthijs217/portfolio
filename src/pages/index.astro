@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageLoader from "../components/PageLoader.astro";
+import { Image } from 'astro:assets';
 import { loadQuery } from "../sanity/lib/load-query";
 import { urlForImage } from "../sanity/lib/url-for-image";
 import Watchall from "../components/Watchall.astro";
@@ -36,71 +38,8 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
   query: GALLERY_IMAGES_QUERY,
 });
 ---
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-	const cursor = document.querySelector('.cursor') as HTMLElement | null;
-	if (!cursor) return;
-	const label = cursor.querySelector('.cursor-label') as HTMLElement | null;
-	const projects = document.querySelectorAll('details.project');
 
-	let mouseX = 0;
-	let mouseY = 0;
-	let curX = 0;
-	let curY = 0;
-	let isHovering = false;
-	const EASE = 0.067;
-
-	window.addEventListener('mousemove', (e) => {
-		mouseX = e.clientX;
-		mouseY = e.clientY;
-	});
-
-	window.addEventListener('mouseleave', () => {
-		cursor.classList.remove('is-active');
-		isHovering = false;
-	});
-
-	function loop() {
-		if (!cursor || !isHovering) {
-			requestAnimationFrame(loop);
-			return;
-		}
-		curX += (mouseX - curX) * EASE;
-		curY += (mouseY - curY) * EASE;
-		// keep the -50% offset so the circle's center aligns with the pointer
-		const circle = cursor.querySelector('.cursor-circle');
-		if (circle) {
-			const cursorRect = cursor.getBoundingClientRect();
-			const circleRect = circle.getBoundingClientRect();
-			const offsetX = (circleRect.left - cursorRect.left) + circleRect.width / 2;
-			const offsetY = (circleRect.top - cursorRect.top) + circleRect.height / 2;
-			cursor.style.transform = `translate(${curX - offsetX}px, ${curY - offsetY}px)`;
-		}
-		requestAnimationFrame(loop);
-	}
-
-	loop();
-
-	projects.forEach((el) => {
-		const summary = el.querySelector('summary');
-
-		el.addEventListener('mouseenter', () => {
-			const text = summary ? summary.textContent?.trim() : '';
-			if (label) label.textContent = text || '';
-			cursor.classList.add('is-active');
-			isHovering = true;
-		});
-
-		el.addEventListener('mouseleave', () => {
-			cursor.classList.remove('is-active');
-			if (label) label.textContent = '';
-			isHovering = false;
-		});
-	});
-});
-</script>
-
-
+<PageLoader />
 <Layout title="| Home">
   <section class="panel panel-1">
     <div class="hero-text">
@@ -115,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <h3>Work</h3>
       <Watchall />
     </div>
-    {posts && posts.map((post) => (
+    {posts && posts.map((post, index) => (
       <ProjectCard 
         title={post.title}
         image={post.mainImage ? urlForImage(post.mainImage.asset).width(1200).url() : '/src/assets/dda-background.png'}
@@ -123,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         category="Development / Projecten /"
         date={new Date(post.publishedAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
         datetime={post.publishedAt}
+        isOpen={index === 0}
       />
     ))}
 
@@ -132,122 +72,93 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <h4>Reizen</h4>
-    <p>Ik heb echt al heel veel mooie plekken op de aarde mogen zien, maar ik ben nog lang niet klaar. Van Amerika naar Azië naar Zuid-Afrika. Ik wil het liefst de hele wereld zien.</p>
+    <p class="travel-description">Ik heb echt al heel veel mooie plekken op de aarde mogen zien, maar ik ben nog lang niet klaar. Van Amerika naar Azië naar Zuid-Afrika. Ik wil het liefst de hele wereld zien.</p>
 
     <div class="travel-images">
       {images && images.map((img) => (
-        <img 
+        <Image 
           src={urlForImage(img.asset).width(800).url()} 
           alt={img.alt || 'Travel photo'} 
+          width={800}
+          height={250}
           loading="lazy"
         />
       ))}
     </div>
   </section>
-
-  <div class="cursor">
-    <div class="cursor-circle"></div>
-    <span class="cursor-label"></span>
-  </div>
 </Layout>
 
 <style>
-  :global(body) {
-    background-color: var(--main-color);
-    color: white;
-    overflow: auto;
-  }
-
-  main {
-    height: 100vh;
-  }
+  
 
   .hero-text {
     position: absolute;
     bottom: 15vh;
     display: grid;
     grid-template-rows: repeat(3, min-content);
+    grid-column: 2 / 10;
     line-height: 1.1;
-    margin-left: 5vw;
+    gap: 0;
+    @media (min-width: 600px) {
+      grid-column: 2 / 10;
+    }
   }
 
-  h1 {
-    font-size: clamp(6rem, 10vw, 14rem);
+  .hero-text h1 {
+    font-size: clamp(4rem, 10vw, 8rem);
     grid-row: 2;
+    margin: 0;
+    padding: 0;
+    margin-left: -3px;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
   }
 
   .panel {
     position: sticky;
     top: 0;
     height: 100vh;
+    display: grid;
+    grid-template-columns: var(--grid-columns);
   }
 
   .panel-2 {
     height: min-content;
-    padding: 1rem;
     background: var(--secondary-color);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    padding-top: 2rem;
   }
 
   .section-title {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	margin: 1rem 0 2rem 0;
-	line-height: 1;
-    @media (min-width: 400px) {
-      flex-direction: row;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 1rem 0 2rem 0;
+    line-height: 1;
+    grid-column: 2/12;
+      @media (min-width: 400px) {
+        flex-direction: row;
+      }
+      &:nth-of-type(2) {
+        padding-top: 2rem;
+      }
   }
 
   .panel-2 h3 {
     font-size: clamp(4rem, 10vw, 6rem);
   }
 
-  .cursor {
-    position: fixed;
-    left: 0;
-    top: 0;
-    pointer-events: none;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    mix-blend-mode: difference;
-    z-index: 9999;
-  }
-
-  .cursor-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    background-size: cover;
-    background-position: center;
-    flex-shrink: 0;
-  }
-
-  .cursor-label {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .cursor.is-active {
-    opacity: 1;
-  }
-
   .panel-2 h4 {
     font-size: clamp(2rem, 5vw, 3rem);
+    grid-column: 2/12;
+  }
+  .travel-description {
+    font-size: 1.25rem;
+    grid-column: 2/12;
+    max-width: 800px;
+    margin-top: 0.5rem;
   }
 
   .travel-images {
@@ -255,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
+    grid-column: 2/12;
+    padding-bottom: 2rem;
   }
 
   .travel-images img {

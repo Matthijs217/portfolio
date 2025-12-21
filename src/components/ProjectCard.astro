@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   title: string;
   image: string;
@@ -6,17 +8,22 @@ interface Props {
   category: string;
   date: string;
   datetime: string;
+  isOpen?: boolean;
 }
 
-const { title, image, imageAlt, category, date, datetime } = Astro.props;
+const { title, image, imageAlt, category, date, datetime, isOpen = false } = Astro.props;
 ---
 
-<details class="project" open>
+<details class="project" open={isOpen}>
   <summary>{title}</summary>
-  <img src={image} alt={imageAlt}>
+  <Image src={image} alt={imageAlt} width={1200} height={800} />
   <div class="work-info">
     <p>{category}</p>
     <p class="date"><time datetime={datetime}>{date}</time></p>
+  </div>
+  <div class="flair flair--3">
+    <div class="flair-circle"></div>
+    <span class="flair-text">{title}</span>
   </div>
 </details>
 
@@ -24,7 +31,8 @@ const { title, image, imageAlt, category, date, datetime } = Astro.props;
   details {
     padding: 1rem;
     border: 1px solid var(--border-color);
-	margin-bottom: 1rem;
+	  margin-bottom: 1rem;
+    grid-column: 2/12;
   }
 
   details .work-info {
@@ -84,4 +92,43 @@ const { title, image, imageAlt, category, date, datetime } = Astro.props;
     margin-top: .5rem;
     object-fit: cover;
   }
+  .flair {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    mix-blend-mode: difference;
+  }
+
+  .flair-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    flex-shrink: 0;
+  }
+
+  .flair-text {
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  details:hover .flair {
+    opacity: 1;
+  }
+
 </style>
+
+<script>
+
+
+</script>

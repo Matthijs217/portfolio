@@ -3,6 +3,7 @@ const menuButton = document.querySelector('.menu-button')
 const menuLabel = menuButton.querySelector('.menu-button-label')
 const headerNav = document.querySelector('.header-nav')
 const headerNavContainer = document.querySelector('.header-nav-container')
+const navItems = document.querySelectorAll('.nav-list-header li a')
 
 menuButton.addEventListener('click', function (ev) {
   ev.preventDefault()
@@ -50,7 +51,9 @@ menuButton.addEventListener('click', function (ev) {
         width: 100%;
         background-color: transparent;
         z-index: 999;
-        padding: 36px 18px 46px 18px;
+        padding-top: 1rem;
+        display: grid;
+        grid-template-columns: var(--grid-columns);
     }
 
     /* HELE NAV */
@@ -59,7 +62,8 @@ menuButton.addEventListener('click', function (ev) {
         display: flex;
         justify-content: end;
         align-items: center;
-        @media (min-width: 820px) {
+        grid-column: 2 / 12;
+        @media (min-width: 996px) {
             gap: 5em;
         }
 
@@ -74,7 +78,7 @@ menuButton.addEventListener('click', function (ev) {
             font-size: 1.5rem;
             position: absolute;
             z-index: 1000;
-            @media (min-width: 820px) {
+            @media (min-width: 996px) {
                 display: none;
                 position:static;
             }
@@ -92,7 +96,7 @@ menuButton.addEventListener('click', function (ev) {
             margin-right: auto;
             font-size: 1.25rem;
             & p:nth-of-type(2) {
-                color: rgb(72, 72, 72);
+                color: rgb(117, 117, 117);
             }
         }
         & .nav-links {
@@ -103,7 +107,7 @@ menuButton.addEventListener('click', function (ev) {
                 transform: scale(1.15);
             }
 
-            @media (min-width: 820px) {
+            @media (min-width: 996px) {
                 display: block;
             }
         }
@@ -120,7 +124,7 @@ menuButton.addEventListener('click', function (ev) {
     /* DIV OM BURGER MENU */
 
     .header-nav-container {
-        @media (min-width: 820px) {
+        @media (min-width: 996px) {
             appearance: none;
             display: none;
             height: 0px;
@@ -189,7 +193,6 @@ menuButton.addEventListener('click', function (ev) {
         position: fixed;
         inset: 0 50% 0 0;
         right: 0;
-        transition: .5s cubic-bezier(.4,0,.2,1);
         transform: translateX(100%);
         background-color: rgb(17 17 17/ 1);
         visibility: hidden;
@@ -203,33 +206,43 @@ menuButton.addEventListener('click', function (ev) {
         &.target {
             transform: translateX(0);
             visibility: visible;
+            transition: transform .5s linear;
         }
     }
     .header-nav.target {
         ul {
             & li {
-                opacity: 0;
-                transform: translateY(80px);
-                animation: fadeInUp 0.3s ease forwards;
-                &:nth-of-type(1) {
-                    animation-delay: 0.1s;
+                overflow: hidden;
+                
+                & a {
+                    display: inline-block;
+                    transform: translateY(100%);
+                    opacity: 0;
                 }
-                &:nth-of-type(2) {
-                    animation-delay: 0.2s;
+                
+                &:nth-of-type(1) a {
+                    animation: slideUpReveal 0.6s linear forwards;
                 }
-                &:nth-of-type(3) {
-                    animation-delay: 0.3s;
+                &:nth-of-type(2) a {
+                    animation: slideUpReveal 0.6s linear forwards;
                 }
-                &:nth-of-type(4) {
-                    animation-delay: 0.4s;
+                &:nth-of-type(3) a {
+                    animation: slideUpReveal 0.6s linear forwards;
+                }
+                &:nth-of-type(4) a {
+                    animation: slideUpReveal 0.6s linear forwards;
                 }
             }
         }
     } 
-    @keyframes fadeInUp {
-        to {
+    @keyframes slideUpReveal {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        100% {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(5%);
         }
     }
 </style>
