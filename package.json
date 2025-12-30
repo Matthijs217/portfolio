@@ -25,5 +25,8 @@
     "react-is": "^19.2.0",
     "sanity": "^4.15.0",
     "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "terser": "^5.44.1"
   }
 }
