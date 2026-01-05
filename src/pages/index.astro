@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageLoader from "../components/PageLoader.astro";
 import { Image } from 'astro:assets';
 import { loadQuery } from "../sanity/lib/load-query";
 import { urlForImage } from "../sanity/lib/url-for-image";
@@ -39,7 +38,6 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
 });
 ---
 
-<PageLoader />
 <Layout title="| Home">
   <section class="panel panel-1">
     <div class="hero-text">
