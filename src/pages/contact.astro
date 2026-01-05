@@ -3,5 +3,25 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="| Contact">
+    <section class="contact-section">
+        <h1>About Me</h1>
+        <p>Contact page coming soon!</p>
+    </section>
+</Layout>
 
-</Layout>  
+<style>
+    .contact-section {
+        display: grid;
+        grid-template-columns: var(--grid-columns);
+        background: var(--main-color);
+    }
+
+    .contact-section h1 {
+        font-size: clamp(3rem, 8vw, 6rem);
+        margin-bottom: 2rem;
+    }
+
+    .contact-section p {
+        font-size: 1.25rem;
+    }
+</style>  

@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from 'astro:assets';
 import { loadQuery } from "../sanity/lib/load-query";
 import { urlForImage } from "../sanity/lib/url-for-image";
 import Watchall from "../components/Watchall.astro";
@@ -74,7 +73,7 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
 
     <div class="travel-images">
       {images && images.map((img) => (
-        <Image 
+        <img 
           src={urlForImage(img.asset).width(800).url()} 
           alt={img.alt || 'Travel photo'} 
           width={800}
