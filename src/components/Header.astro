@@ -1,4 +1,7 @@
 <script>
+
+import gsap from "gsap"
+
 const menuButton = document.querySelector('.menu-button')
 const menuLabel = menuButton.querySelector('.menu-button-label')
 const headerNav = document.querySelector('.header-nav')
@@ -6,14 +9,87 @@ const headerNavContainer = document.querySelector('.header-nav-container')
 const navItems = document.querySelectorAll('.nav-list-header li a')
 
 menuButton.addEventListener('click', function (ev) {
-  ev.preventDefault()
+    ev.preventDefault()
 
-  const isOpen = headerNav.classList.toggle('target')
-  headerNavContainer.classList.toggle('show', isOpen)
-  menuButton.classList.toggle('show', isOpen)
+    const isOpen = headerNav.classList.toggle('target')
+    headerNavContainer.classList.toggle('show', isOpen)
+    menuButton.classList.toggle('show', isOpen)
 
-  menuLabel.textContent = isOpen ? 'CLOSE' : 'MENU'
+    menuLabel.textContent = isOpen ? 'CLOSE' : 'MENU'
 })
+
+const items = document.querySelectorAll('.nav-links')
+const underline = document.querySelector('.nav-underline')
+const navLinksContainer = document.querySelector('nav')
+
+let isHoveringNavItem = false
+let leaveTimeout = null
+
+function updateUnderline(item) {
+    const itemRect = item.getBoundingClientRect()
+    const navRect = item.parentElement.getBoundingClientRect()
+
+    gsap.to(underline, {
+        duration: 0.3,
+        width: itemRect.width,
+        x: itemRect.left - navRect.left,
+        ease: "power2.out"
+    })
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        isHoveringNavItem = true
+        if (leaveTimeout) {
+            clearTimeout(leaveTimeout)
+            leaveTimeout = null
+        }
+        updateUnderline(item)
+    })
+
+    item.addEventListener('mouseleave', () => {
+        isHoveringNavItem = false
+    })
+})
+
+// Handle leaving the entire nav area
+navLinksContainer.addEventListener('mouseleave', () => {
+    leaveTimeout = setTimeout(() => {
+        const activeItem = document.querySelector('.nav-links.active')
+        if (activeItem) {
+            updateUnderline(activeItem)
+        } else {
+            gsap.to(underline, {
+                duration: 0.3,
+                width: 0,
+                ease: "power2.out"
+            })
+        }
+    }, 150)
+})
+
+// Set active link on page load
+const currentPath = window.location.pathname
+items.forEach(item => {
+    if (item.getAttribute('href') === currentPath) {
+        item.classList.add('active')
+        updateUnderline(item)
+    }
+})
+
+// Re-initialize underline on window resize (for mobile to desktop transitions)
+let resizeTimeout = null
+window.addEventListener('resize', () => {
+    if (resizeTimeout) clearTimeout(resizeTimeout)
+    
+    resizeTimeout = setTimeout(() => {
+        const activeItem = document.querySelector('.nav-links.active')
+        if (activeItem && window.innerWidth >= 996) {
+            updateUnderline(activeItem)
+        }
+    }, 100)
+})
+
 </script>
 
 <header>
@@ -36,10 +112,14 @@ menuButton.addEventListener('click', function (ev) {
             <p>Matthijs ten Brink</p>
             <p>Matthijs_tb7</p>
         </div>
-        <a class="nav-links" href="/">HOME</a>
-        <a class="nav-links" href="/work">WORK</a>
-        <a class="nav-links" href="/about-me">ABOUT</a>
-        <a class="nav-links" href="/contact">CONTACT</a>
+        <nav>
+            <a class="nav-links" href="/">HOME</a>
+            <a class="nav-links" href="/work">WORK</a>
+            <a class="nav-links" href="/about-me">ABOUT</a>
+            <a class="nav-links" href="/contact">CONTACT</a>
+
+            <span class="nav-underline"></span>
+        </nav>
     </nav>
     
 </header>
@@ -99,13 +179,15 @@ menuButton.addEventListener('click', function (ev) {
                 color: rgb(117, 117, 117);
             }
         }
+        & nav {
+            display: flex;
+            gap: 2.5rem;
+            position: relative;
+        }
         & .nav-links {
             display: none;
             font-size: 2rem;
-
-            &:hover {
-                transform: scale(1.15);
-            }
+            position: relative;
 
             @media (min-width: 996px) {
                 display: block;
@@ -120,7 +202,17 @@ menuButton.addEventListener('click', function (ev) {
         }
     }
 
-
+    .nav-underline {
+        @media (min-width: 996px) {
+            display: static;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background-color: white;
+        }
+    }
     /* DIV OM BURGER MENU */
 
     .header-nav-container {
