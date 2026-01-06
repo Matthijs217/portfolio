@@ -69,9 +69,10 @@ navLinksContainer.addEventListener('mouseleave', () => {
 })
 
 // Set active link on page load
-const currentPath = window.location.pathname
+const currentPath = window.location.pathname.replace(/\/$/, '') || '/'
 items.forEach(item => {
-    if (item.getAttribute('href') === currentPath) {
+    const itemPath = item.getAttribute('href').replace(/\/$/, '') || '/'
+    if (itemPath === currentPath) {
         item.classList.add('active')
         updateUnderline(item)
     }
