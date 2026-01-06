@@ -51,7 +51,9 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </article>
 
-                <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <form class="contact-form" name="contact" method="POST" id="contactForm">
+                    <!-- blijkbaar tegen spam -->
+                    <input class="hidden" type="text" name="company" tabindex="-1" autocomplete="off" />
 
                     <label for="name">Naam
                         <input type="text" id="name" name="name" required placeholder="Je naam"/>
@@ -69,6 +71,7 @@ import Layout from "../layouts/Layout.astro";
                         <textarea id="message" name="message" rows="6" required placeholder="Vertel me meer over je project of vraag..."></textarea>
                     </label>
 
+                    
                     <button type="submit" class="submit-btn">
                         Verstuur Bericht
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -327,3 +330,45 @@ import Layout from "../layouts/Layout.astro";
         }
     }
 </style>  
+
+<script type="module">
+  const form = document.getElementById("contactForm");
+  const btn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    btn.disabled = true;
+    const oldHTML = btn.innerHTML;
+    btn.textContent = "Versturen...";
+
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (r.ok) {
+        form.reset();
+        btn.textContent = "Verzonden!";
+        
+        setTimeout(() => {
+          btn.innerHTML = oldHTML;
+          btn.disabled = false;
+        }, 2000);
+      } else {
+        alert("Ging mis. Check je velden en probeer opnieuw.");
+        btn.innerHTML = oldHTML;
+        btn.disabled = false;
+      }
+    } catch {
+      alert("Ging mis. Probeer later opnieuw.");
+      btn.innerHTML = oldHTML;
+      btn.disabled = false;
+    }
+  });
+</script>
