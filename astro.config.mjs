@@ -3,12 +3,12 @@ import { defineConfig } from "astro/config";
 
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
-import netlify from '@astrojs/netlify';
+import cloudflare from '@astrojs/cloudflare';
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: netlify(),
+  adapter: cloudflare(),
   integrations: [
     sanity({
       projectId: 'r3k6w9b9',
