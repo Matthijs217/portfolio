@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import sanity from "@sanity/astro";
 import react from "@astrojs/react";
 import netlify from '@astrojs/netlify';
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,6 +20,9 @@ export default defineConfig({
     react(),
   ],
   vite: {
+    define: {
+      CESIUM_BASE_URL: JSON.stringify("/cesium"),
+    },
     build: {
       minify: 'terser',
       terserOptions: {
@@ -27,5 +31,15 @@ export default defineConfig({
         },
       },
     },
+    plugins: [
+      viteStaticCopy({
+        targets: [
+          { src: "node_modules/cesium/Build/Cesium/Workers", dest: "cesium" },
+          { src: "node_modules/cesium/Build/Cesium/Assets", dest: "cesium" },
+          { src: "node_modules/cesium/Build/Cesium/Widgets", dest: "cesium" },
+          { src: "node_modules/cesium/Build/Cesium/ThirdParty", dest: "cesium" },
+        ],
+      }),
+    ],
   },
 });

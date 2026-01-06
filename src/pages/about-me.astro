@@ -1,17 +1,84 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PortableText from "../components/PortableText.astro";
 import { loadQuery } from "../sanity/lib/load-query";
+import { urlForImage } from "../sanity/lib/url-for-image";
 
 const { data: page } = await loadQuery<any>({
-  query: `*[_type == "page" && slug.current == "about-me"][0]{
-    title,
-    content
+  query: `*[_type == "page" && slug.current == "about-me"][0]{ title, content }`,
+});
+
+const { data: markers } = await loadQuery<any>({
+  query: `*[_type == "globeMarker"] | order(order asc) {
+    name,
+    label,
+    description,
+    latitude,
+    longitude,
+    images
   }`,
 });
+
+// Transform Sanity data naar het formaat dat de globe verwacht
+const points = markers?.map((marker: any) => ({
+  name: marker.name,
+  desc: marker.description,
+  lat: marker.latitude,
+  lon: marker.longitude,
+  label: marker.label,
+  images: marker.images?.map((img: any) => 
+    urlForImage(img).width(900).quality(60).auto("format").url()
+  ) || []
+})) || [];
 ---
 
 <Layout title={page?.title || "About Me"}>
+  <section class="cesium-section">
     <h1>{page?.title || "About Me"}</h1>
-    {page?.content && <PortableText portableText={page.content} />}
+    <div id="cesiumContainer" class="cesium-wrap"></div>
+  </section>
 </Layout>
+
+<script>
+  import { mountCesium } from "../components/cesium-globe.js";
+  
+  // @ts-ignore - points komen van Astro
+  const points = window.__GLOBE_POINTS__;
+  
+  const viewer = mountCesium("cesiumContainer", points);
+  window.addEventListener("beforeunload", () => {
+    viewer?.__cleanup?.();
+    viewer?.destroy?.();
+  });
+</script>
+
+<script is:inline define:vars={{ points }}>
+  window.__GLOBE_POINTS__ = points;
+</script>
+
+<style>
+  .cesium-section {
+    display: grid;
+    grid-template-columns: var(--grid-columns);
+    background: var(--main-color);
+    min-height: 100vh;
+    padding: 5rem 0 0 0;
+  }
+
+  .cesium-wrap {
+    grid-column: 2 / 12;
+    width: 100%;
+    height: 560px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  h1 {
+    grid-column: 2 / 12;
+    font-size: clamp(2rem, 5vw, 4rem);
+    text-align: center;
+  }
+
+  :global(#cesiumContainer .cesium-widget-credits) {
+    display: none !important;
+  }
+</style>

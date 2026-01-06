@@ -1,0 +1,110 @@
+.cesium-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cesium-modal.active {
+  display: flex;
+}
+
+.cesium-modal-content {
+  background: rgba(10, 16, 30, 0.95);
+  border: 1px solid rgba(120, 160, 255, 0.35);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: #eaf0ff;
+}
+
+.cesium-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.cesium-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cesium-modal h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.cesium-modal p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.cesium-modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cesium-modal-gallery img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cesium-modal-gallery img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .cesium-modal {
+    padding: 1rem;
+  }
+
+  .cesium-modal-content {
+    padding: 1.5rem;
+  }
+
+  .cesium-modal h2 {
+    font-size: 1.5rem;
+  }
+
+  .cesium-modal p {
+    font-size: 1rem;
+  }
+
+  .cesium-modal-gallery {
+    grid-template-columns: 1fr;
+  }
+}
