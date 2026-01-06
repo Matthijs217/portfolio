@@ -2,6 +2,11 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./cesium-globe.css";
 import * as Cesium from "cesium";
 
+// Stel Cesium base URL in voor productie builds
+if (typeof CESIUM_BASE_URL !== "undefined") {
+  window.CESIUM_BASE_URL = CESIUM_BASE_URL;
+}
+
 export function mountCesium(containerOrId, points = []) {
   const container =
     typeof containerOrId === "string"
