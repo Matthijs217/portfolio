@@ -74,7 +74,14 @@ items.forEach(item => {
     const itemPath = item.getAttribute('href').replace(/\/$/, '') || '/'
     if (itemPath === currentPath) {
         item.classList.add('active')
-        updateUnderline(item)
+    }
+})
+
+// Wait for fonts to load before updating underline
+document.fonts.ready.then(() => {
+    const activeItem = document.querySelector('.nav-links.active')
+    if (activeItem) {
+        updateUnderline(activeItem)
     }
 })
 
