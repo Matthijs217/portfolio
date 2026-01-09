@@ -7,7 +7,7 @@ if (typeof CESIUM_BASE_URL !== "undefined") {
   window.CESIUM_BASE_URL = CESIUM_BASE_URL;
 }
 
-export function mountCesium(containerOrId, points = []) {
+export function mountCesium(containerOrId, points = [], onReady = null) {
   const container =
     typeof containerOrId === "string"
       ? document.getElementById(containerOrId)
@@ -113,11 +113,17 @@ export function mountCesium(containerOrId, points = []) {
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(points[0].lon, points[0].lat, 19000000),
       duration: 0.9,
+      complete: () => {
+        // Call onReady callback when camera animation is complete
+        if (onReady) onReady();
+      }
     });
   } else {
     viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(0, 20, 25000000),
     });
+    // Call onReady immediately if no animation
+    if (onReady) onReady();
   }
 
   // --- Click op marker = modal popup ---

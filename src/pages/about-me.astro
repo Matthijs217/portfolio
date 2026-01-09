@@ -34,24 +34,57 @@ const points = markers?.map((marker: any) => ({
 <Layout title={page?.title || "About Me"}>
   <section class="cesium-section">
     <h1>{page?.title || "About Me"}</h1>
-    <div id="cesiumContainer" class="cesium-wrap"></div>
+    <div class="cesium-wrapper">
+      <div id="cesiumLoader" class="cesium-loader">
+        <div class="loader-spinner"></div>
+        <p>Loading globe...</p>
+      </div>
+      <div id="cesiumContainer" class="cesium-wrap"></div>
+    </div>
   </section>
 </Layout>
 
 <script>
   import { mountCesium } from "../components/cesium-globe.js";
   
-  // @ts-ignore - points komen van Astro
+  // @ts-ignore - points komen van Astro server-side data
+  // Haal de globe marker data op die we hieronder in het inline script hebben gedefinieerd
   const points = window.__GLOBE_POINTS__;
   
-  const viewer = mountCesium("cesiumContainer", points);
-  window.addEventListener("beforeunload", () => {
-    viewer?.__cleanup?.();
-    viewer?.destroy?.();
-  });
+  // Referentie naar de loader overlay die we tonen tijdens het laden
+  const loader = document.getElementById("cesiumLoader");
+  
+  // Kleine timeout om te zorgen dat de DOM volledig klaar is
+  // Dit voorkomt race conditions bij het mounten van Cesium
+  setTimeout(() => {
+    // Initialiseer de Cesium globe viewer met een onReady callback
+    // De callback wordt aangeroepen zodra de globe klaar is met laden én de camera animatie compleet is
+    const viewer = mountCesium("cesiumContainer", points, () => {
+      // Callback functie: wordt uitgevoerd wanneer de globe volledig geladen is
+      // Dit is het moment om de loader te verbergen
+      if (loader) {
+        // Fade out animatie starten
+        loader.style.opacity = "0";
+        
+        // Na de fade-out animatie (300ms), verwijder de loader volledig uit de layout
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 300);
+      }
+    });
+    
+    // Cleanup functie voor wanneer de gebruiker de pagina verlaat
+    // Dit voorkomt memory leaks door de Cesium viewer en event handlers op te ruimen
+    window.addEventListener("beforeunload", () => {
+      viewer?.__cleanup?.(); // Custom cleanup voor modal en event handlers
+      viewer?.destroy?.();    // Cesium's eigen destroy methode
+    });
+  }, 100);
 </script>
 
 <script is:inline define:vars={{ points }}>
+  // Inline script om server-side data (points) beschikbaar te maken voor client-side scripts
+  // Dit moet inline zijn zodat de data al beschikbaar is voordat het bovenstaande script laadt
   window.__GLOBE_POINTS__ = points;
 </script>
 
@@ -64,12 +97,55 @@ const points = markers?.map((marker: any) => ({
     padding: 5rem 0 0 0;
   }
 
-  .cesium-wrap {
+  .cesium-wrapper {
     grid-column: 2 / 12;
     width: 100%;
     height: 560px;
+    position: relative;
+  }
+
+  .cesium-wrap {
+    width: 100%;
+    height: 100%;
     border-radius: 16px;
     overflow: hidden;
+  }
+
+  .cesium-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 16, 30, 0.95);
+    border-radius: 16px;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+  }
+
+  .cesium-loader p {
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+  }
+
+  .loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(120, 160, 255, 0.8);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   h1 {
