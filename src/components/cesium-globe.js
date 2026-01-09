@@ -111,7 +111,7 @@ export function mountCesium(containerOrId, points = []) {
   // Start camera (meer “bol” gevoel)
   if (points[0]) {
     viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(points[0].lon, points[0].lat, 12000000),
+      destination: Cesium.Cartesian3.fromDegrees(points[0].lon, points[0].lat, 19000000),
       duration: 0.9,
     });
   } else {
@@ -123,6 +123,14 @@ export function mountCesium(containerOrId, points = []) {
   // --- Click op marker = modal popup ---
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
+  handler.setInputAction((movement) => {
+    const picked = viewer.scene.pick(movement.endPosition);
+    if (Cesium.defined(picked) && picked.id && picked.id.properties) {
+      viewer.scene.canvas.style.cursor = "pointer";
+    } else {
+      viewer.scene.canvas.style.cursor = "default";
+    }
+  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
   handler.setInputAction((click) => {
     const picked = viewer.scene.pick(click.position);

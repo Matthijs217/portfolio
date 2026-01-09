@@ -56,7 +56,7 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
         title={post.title}
         image={post.mainImage ? urlForImage(post.mainImage.asset).width(1200).url() : '/src/assets/dda-background.png'}
         imageAlt={post.mainImage?.alt || post.title}
-        category="Development / Projecten /"
+        category="Development / Projecten"
         date={new Date(post.publishedAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
         datetime={post.publishedAt}
         isOpen={index === 0}

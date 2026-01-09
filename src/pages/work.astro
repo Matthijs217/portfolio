@@ -1,7 +1,68 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { loadQuery } from "../sanity/lib/load-query";
+import { urlForImage } from "../sanity/lib/url-for-image";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  body
+}`;
+
+const { data: posts } = await loadQuery<Array<{
+  title: string;
+  slug: string;
+  mainImage: { asset: any; alt?: string };
+  publishedAt: string;
+  body: any;
+}>>({
+  query: POSTS_QUERY,
+});
 ---
 
 <Layout title="| Work">
+  <section class="work-section">
+    <div class="section-title">
+      <h1>Work</h1>
+      <p>Here you can find a selection of my recent projects and developments.</p>
+    </div>
+    {posts && posts.map((post, index) => (
+      <ProjectCard 
+        title={post.title}
+        image={post.mainImage ? urlForImage(post.mainImage.asset).width(1200).url() : '/src/assets/dda-background.png'}
+        imageAlt={post.mainImage?.alt || post.title}
+        category="Development / Projecten"
+        date={new Date(post.publishedAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+        datetime={post.publishedAt}
+        isOpen={index === 0}
+      />
+    ))}
+  </section>
+</Layout>
 
-</Layout>  
+<style>
+  .work-section {
+    display: grid;
+    grid-template-columns: var(--grid-columns);
+    background: var(--main-color);
+    padding: 6rem 0;
+  }
+
+  .section-title {
+    grid-column: 2/12;
+    margin: 1rem 0 2rem 0;
+    line-height: 1;
+    & p {
+      margin: 1rem 0 0 0;
+      color: rgba(255, 255, 255, 0.802);
+    }
+  }
+
+  .section-title h1 {
+    font-size: clamp(4rem, 10vw, 6rem);
+    margin: 0;
+  }
+</style>  
