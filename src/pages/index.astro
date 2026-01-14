@@ -49,7 +49,7 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
   <section class="panel panel-2">
     <div class="section-title">
       <h3>Work</h3>
-      <Watchall />
+      <Watchall href="/work" />
     </div>
     {posts && posts.map((post, index) => (
       <ProjectCard 
@@ -65,7 +65,7 @@ const { data: images } = await loadQuery<Array<{asset: any, alt?: string}>>({
 
     <div class="section-title">
       <h3>About me</h3>
-      <Watchall />
+      <Watchall href="/about-me" />
     </div>
 
     <h4>Reizen</h4>
