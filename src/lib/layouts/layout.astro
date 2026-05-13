@@ -1,0 +1,42 @@
+---
+import '../../styles/stylesheet.css';
+import Header from '../components/organisms/SiteHeader.astro';
+import FooterSection from '../components/organisms/SiteFooter.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  favicon?: string;
+}
+
+const { title, description, favicon } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={favicon || '/favicon.svg'} />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title || 'Portfolio | Matthijs ten Brink'}</title>
+    <meta name="description" content={description || 'Portfolio van Matthijs ten Brink, een creatieve developer die zich richt op het bouwen van unieke digitale ervaringen.'} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <FooterSection/>
+  </body>
+</html>
+
+<style>
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+</style>
