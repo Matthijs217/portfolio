@@ -1,0 +1,63 @@
+---
+import NavLink from '../atoms/NavLink.astro';
+
+const links = [
+  { href: '/', label: 'Index' },
+  { href: '/#work', label: 'Work' },
+  { href: '/#about', label: 'About' },
+  { href: '/#journal', label: 'Journal' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<nav class="nav-bar">
+  <button class="nav-bar__hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <ul class="nav-bar__list" id="nav-menu">
+    {links.map(link => (
+      <li>
+        <NavLink href={link.href} label={link.label} />
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .nav-bar__list {
+    display: none;
+    list-style: none;
+    gap: 2rem;
+  }
+
+  .nav-bar__hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .nav-bar__hamburger span {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background-color: var(--color-text);
+    transition: opacity 0.2s;
+  }
+
+  @media (min-width: 600px) {
+    .nav-bar__hamburger {
+      display: none;
+    }
+
+    .nav-bar__list {
+      display: flex;
+    }
+  }
+</style>

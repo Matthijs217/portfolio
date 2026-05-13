@@ -1,0 +1,47 @@
+---
+import NavBar from '../molecules/NavBar.astro';
+---
+
+<header class="site-header">
+  <div class="site-header__identity">
+    <a href="/" class="site-header__name text-name">Matthijs ten Brink</a>
+    <span class="site-header__role text-label">Frontend Developer · Amsterdam, NL</span>
+  </div>
+  <NavBar />
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 1.5rem;
+    padding-block: 1rem;
+  }
+
+  .site-header__identity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .site-header__name {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-header__role {
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 600px) {
+    .site-header {
+      padding-inline: 3rem;
+    }
+  }
+</style>
