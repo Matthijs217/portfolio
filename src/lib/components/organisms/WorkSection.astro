@@ -1,0 +1,51 @@
+---
+import SectionLabel from '../atoms/SectionLabel.astro';
+import ProjectRow from '../molecules/ProjectRow.astro';
+
+interface Project {
+  _id: string;
+  title: string;
+  category?: string;
+  description?: string;
+  url?: string;
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects = [] } = Astro.props;
+---
+
+<section class="work-section" id="work">
+  <SectionLabel index="02" title="Selected work" meta="2024 — 2026" />
+
+  <ul class="work-section__list">
+    {projects.map((project, index) => (
+      <ProjectRow
+        index={String(index + 1).padStart(2, '0')} // index begint op 0 dus +1, en padStart voegt een 0 toe voor getallen < 10
+        title={project.title}
+        category={project.category ?? 'Project'}
+        description={project.description ?? ''}
+        href={project.url ?? '#'}
+      />
+    ))}
+  </ul>
+</section>
+
+<style>
+  .work-section {
+    padding-inline: 1.5rem;
+    padding-block: 4rem;
+  }
+
+  .work-section__list {
+    list-style: none;
+  }
+
+  @media (min-width: 600px) {
+    .work-section {
+      padding-inline: 3rem;
+    }
+  }
+</style>

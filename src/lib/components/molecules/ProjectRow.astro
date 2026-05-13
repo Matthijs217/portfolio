@@ -1,0 +1,68 @@
+---
+import ArrowLink from '../atoms/ArrowLink.astro';
+
+interface Props {
+  index: string;
+  title: string;
+  category: string;
+  description: string;
+  href: string;
+}
+
+const { index, title, category, description, href } = Astro.props;
+---
+
+<li class="project-row">
+  <span class="project-row__index text-label">{index}</span>
+
+  <div class="project-row__body">
+    <h3 class="project-row__title text-project">{title}</h3>
+    <div class="project-row__meta">
+      <span class="text-label">{category}</span>
+      <span class="text-label project-row__description">{description}</span>
+    </div>
+  </div>
+
+  <ArrowLink href={href} />
+</li>
+
+<style>
+  .project-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .project-row__index {
+    color: var(--color-muted);
+  }
+
+  .project-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .project-row__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 600px) {
+    .project-row__body {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-row__meta {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  }
+</style>

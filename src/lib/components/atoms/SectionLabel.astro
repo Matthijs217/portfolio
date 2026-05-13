@@ -1,0 +1,25 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  meta?: string;
+}
+
+const { index, title, meta } = Astro.props;
+---
+
+<h2 id={`section-${index}`} class="section-label text-label">
+  <span>({index}) — {title}</span>
+  {meta && <span class="section-label__meta">{meta}</span>}
+</h2>
+
+<style>
+  .section-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 0.875rem;
+    border-top: 1px solid var(--color-divider);
+    color: var(--color-muted);
+  }
+</style>
