@@ -10,8 +10,8 @@ const links = [
 ];
 ---
 
-<nav aria-label="Hoofdnavigatie">
-  <ul class="nav-desktop" role="list">
+<nav>
+  <ul class="nav-desktop" >
     {links.map(link => (
       <li><NavLink href={link.href} label={link.label} /></li>
     ))}
@@ -20,7 +20,7 @@ const links = [
   <details class="nav-mobile">
     <summary class="nav-mobile__toggle text-nav">Menu</summary>
 
-    <ul class="nav-mobile__list" role="list">
+    <ul class="nav-mobile__list" >
       {links.map(link => (
         <li><NavLink href={link.href} label={link.label} /></li>
       ))}
