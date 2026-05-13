@@ -25,6 +25,12 @@ const { href, label } = Astro.props;
     transition: opacity 0.2s;
   }
 
+  .arrow-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
   .arrow-link:hover {
     opacity: 0.6;
   }

@@ -23,13 +23,14 @@ const { projects = [] } = Astro.props;
   <ul class="work-section__list">
     {projects.map((project, index) => (
       <ProjectRow
-        index={String(index + 1).padStart(2, '0')} // index begint op 0 dus +1, en padStart voegt een 0 toe voor getallen < 10
+        index={String(index + 1).padStart(2, '0')} 
         title={project.title}
         category={project.category ?? 'Project'}
         description={project.description ?? ''}
         href={project.url ?? '#'}
       />
     ))}
+    <!-- index begint op 0 dus +1, en padStart voegt een 0 toe voor getallen < 10 -->
   </ul>
 </section>
 
