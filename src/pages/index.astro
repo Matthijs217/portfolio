@@ -1,0 +1,19 @@
+---
+import Layout from "../lib/layouts/layout.astro";
+import HeroSection from "../lib/components/organisms/HeroSection.astro";
+import WorkSection from "../lib/components/organisms/WorkSection.astro";
+
+import { sanityClient } from '../sanity/client';
+
+const projects = await sanityClient.fetch(`*[_type == "project"] | order(publishedAt desc) {
+  _id,
+  title,
+  description,
+  url
+}`);
+---
+
+<Layout>
+  <HeroSection />
+  <WorkSection projects={projects} />
+</Layout>
