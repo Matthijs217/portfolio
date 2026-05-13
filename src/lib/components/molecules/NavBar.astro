@@ -10,54 +10,66 @@ const links = [
 ];
 ---
 
-<nav class="nav-bar">
-  <button class="nav-bar__hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <ul class="nav-bar__list" id="nav-menu">
+<nav aria-label="Hoofdnavigatie">
+  <ul class="nav-desktop" role="list">
     {links.map(link => (
-      <li>
-        <NavLink href={link.href} label={link.label} />
-      </li>
+      <li><NavLink href={link.href} label={link.label} /></li>
     ))}
   </ul>
+
+  <details class="nav-mobile">
+    <summary class="nav-mobile__toggle text-nav">Menu</summary>
+
+    <ul class="nav-mobile__list" role="list">
+      {links.map(link => (
+        <li><NavLink href={link.href} label={link.label} /></li>
+      ))}
+    </ul>
+  </details>
 </nav>
 
 <style>
-  .nav-bar__list {
+  .nav-desktop {
     display: none;
     list-style: none;
     gap: 2rem;
   }
 
-  .nav-bar__hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.25rem;
+  .nav-mobile {
+    position: relative;
   }
 
-  .nav-bar__hamburger span {
-    display: block;
-    width: 22px;
-    height: 1px;
-    background-color: var(--color-text);
-    transition: opacity 0.2s;
+  .nav-mobile__toggle {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .nav-mobile__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-mobile__list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 1rem);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-divider);
+    padding: 1.5rem;
+    min-width: 12rem;
   }
 
   @media (min-width: 600px) {
-    .nav-bar__hamburger {
-      display: none;
+    .nav-desktop {
+      display: flex;
     }
 
-    .nav-bar__list {
-      display: flex;
+    .nav-mobile {
+      display: none;
     }
   }
 </style>
