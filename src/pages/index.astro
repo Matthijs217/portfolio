@@ -2,6 +2,7 @@
 import Layout from "../lib/layouts/layout.astro";
 import HeroSection from "../lib/components/organisms/HeroSection.astro";
 import WorkSection from "../lib/components/organisms/WorkSection.astro";
+import AboutSection from "../lib/components/organisms/AboutSection.astro";
 
 import { sanityClient } from '../sanity/client';
 
@@ -16,4 +17,5 @@ const projects = await sanityClient.fetch(`*[_type == "project"] | order(publish
 <Layout>
   <HeroSection />
   <WorkSection projects={projects} />
+  <AboutSection />
 </Layout>
