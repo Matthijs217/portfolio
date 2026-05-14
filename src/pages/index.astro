@@ -6,16 +6,25 @@ import AboutSection from "../lib/components/organisms/AboutSection.astro";
 
 import { sanityClient } from '../sanity/client';
 
+// https://www.sanity.io/docs/astro/query-content-astro voor de fetch
 const projects = await sanityClient.fetch(`*[_type == "project"] | order(publishedAt desc) {
   _id,
   title,
   description,
   url
 }`);
+
+// SELECT * FROM documents WHERE _type = 'about' LIMIT 1 maar dan in sanity's query taal (GROQ)
+const about = await sanityClient.fetch(`*[_type == "about"][0] {
+  text,
+  value1,
+  value2,
+  value3
+}`);
 ---
 
 <Layout>
   <HeroSection />
   <WorkSection projects={projects} />
-  <AboutSection />
+  <AboutSection text={about.text} value1={about.value1} value2={about.value2} value3={about.value3} />
 </Layout>

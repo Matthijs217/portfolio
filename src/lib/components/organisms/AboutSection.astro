@@ -1,0 +1,81 @@
+---
+import SectionLabel from '../atoms/SectionLabel.astro';
+
+const { text, value1, value2, value3 } = Astro.props;
+---
+
+<section class="about-section" id="about">
+  <SectionLabel index="03" title="About" />
+
+  <div class="about-section__grid">
+    <p class="about-section__bio text-lead">
+      {text}
+    </p>
+
+    <div class="about-section__values">
+      <p class="text-label about-section__values-label">Operating principles</p>
+      <ul class="about-section__values-list" >
+       <li class="text-values about-section__value">{value1}</li>
+       <li class="text-values about-section__value">{value2}</li>
+       <li class="text-values about-section__value">{value3}</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="about-section__footer text-label">
+    Est. 2006 · Based in Amsterdam · Working worldwide
+  </p>
+</section>
+
+<style>
+  .about-section {
+    padding-inline: 1.5rem;
+    padding-block: 4rem;
+  }
+
+  .about-section__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-block: 2.5rem;
+  }
+
+  .about-section__values-label {
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+
+  .about-section__values-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .about-section__value {
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .about-section__value:nth-child(2) { opacity: 0.7; }
+  .about-section__value:nth-child(3) { opacity: 0.4; }
+
+  .about-section__footer {
+    color: var(--color-muted);
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  @media (min-width: 600px) {
+    .about-section {
+      padding-inline: 3rem;
+    }
+
+    .about-section__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: 4rem;
+    }
+  }
+</style>
