@@ -27,7 +27,7 @@ html, body {
 
     --color-stripe:  hsla(0, 0%, 100%, 0.80);
     --color-divider: hsla(0, 0%, 100%, 0.15);
-    --color-muted:   hsla(0, 0%, 100%, 0.40);
+    --color-muted:   hsla(0, 0%, 100%, 0.65);
     --color-subtle:  hsla(0, 0%, 100%, 0.20);
   }
 }
@@ -52,7 +52,7 @@ html, body {
     --text-nav:      clamp(0.625rem, 0.7vw, 0.75rem);
     --text-name:     clamp(1rem,    1.5vw, 1.375rem);
     --text-email:    clamp(0.875rem, 1.2vw, 1.125rem);
-    --text-label:    clamp(0.5625rem, 0.6vw, 0.625rem);
+    --text-label:    clamp(0.6875rem, 0.8vw, 0.8125rem); /* ~13px max  */
 
   }
 
