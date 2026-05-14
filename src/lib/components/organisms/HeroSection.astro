@@ -1,0 +1,119 @@
+---
+---
+
+<section class="hero">
+  <div class="hero__stripe"></div>
+
+  <div class="hero__content">
+    <p class="hero__welcome text-label">
+      <span class="hero__welcome-line"></span>
+      Welcome to my portfolio — V2026
+    </p>
+
+    <h1 class="hero__title text-hero">
+      <span>Matthijs</span>
+      <span>ten Brink</span>
+    </h1>
+
+    <div class="hero__footer">
+      <p class="hero__bio text-lead">
+        I build performant, expressive interfaces for ambitious brands and small teams.
+        Currently open to new collaborations.
+      </p>
+      <div class="hero__meta">
+        <span class="text-label">Scroll</span>
+        <span class="text-label hero__coordinates">52.3678° N · 4.9041° E</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    padding: 6rem 1.5rem 2.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero__stripe {
+    position: absolute;
+    top: -20%;
+    right: -30%;
+    width: 70%;
+    height: 200%;
+    background-color: var(--color-stripe);
+    transform: rotate(-25deg);
+    transform-origin: top right;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  .hero__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .hero__welcome {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-muted);
+  }
+
+  .hero__welcome-line {
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background-color: var(--color-muted);
+    flex-shrink: 0;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .hero__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hero__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 600px) {
+    .hero {
+      padding: 8rem 3rem 3rem;
+    }
+
+    .hero__stripe {
+      right: -10%;
+      width: 50%;
+      opacity: 0.1;
+    }
+
+    .hero__footer {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .hero__meta {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+  }
+</style>

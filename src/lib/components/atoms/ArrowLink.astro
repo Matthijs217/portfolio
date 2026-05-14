@@ -2,14 +2,16 @@
 interface Props {
   href: string;
   label?: string;
+  ariaLabel?: string;
 }
 
-const { href, label } = Astro.props;
+const { href, label, ariaLabel } = Astro.props;
 ---
 
 <a
   href={href}
-  class="arrow-link text-label" 
+  class="arrow-link text-label"
+  aria-label={ariaLabel}
 >
   {label && <span>{label}</span>}
   <span class="arrow-link__icon" aria-hidden="true">{label ? '↗' : '→'}</span>

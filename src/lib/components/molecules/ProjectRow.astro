@@ -22,7 +22,7 @@ const { index, title, category, description, href } = Astro.props;
     </div>
   </div>
 
-  <ArrowLink href={href} />
+  <ArrowLink href={href} ariaLabel={`Bekijk project: ${title}`} />
 </li>
 
 <style>
