@@ -27,10 +27,5 @@ export const journalSchema = defineType({
       title: 'Leestijd',
       type: 'number',
     }),
-    defineField({
-      name: 'publishedAt',
-      title: 'Gepubliceerd op',
-      type: 'date',
-    }),
   ],
 });
