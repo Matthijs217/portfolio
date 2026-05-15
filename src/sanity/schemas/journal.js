@@ -6,6 +6,12 @@ export const journalSchema = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'date',
+      title: 'Datum',
+      type: 'date',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'title',
       title: 'Titel',
       type: 'string',
