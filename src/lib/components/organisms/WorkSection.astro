@@ -2,14 +2,6 @@
 import SectionLabel from '../atoms/SectionLabel.astro';
 import ProjectRow from '../molecules/ProjectRow.astro';
 
-interface Project {
-  _id: string;
-  title: string;
-  category?: string;
-  description?: string;
-  url?: string;
-}
-
 interface Props {
   projects: Project[];
 }
@@ -27,7 +19,7 @@ const { projects = [] } = Astro.props;
         title={project.title}
         category={project.category ?? 'Project'}
         description={project.description ?? ''}
-        href={project.url ?? '#'}
+        href={project.url ?? ''}
       />
     ))}
     <!-- index begint op 0 dus +1, en padStart voegt een 0 toe voor getallen < 10 -->

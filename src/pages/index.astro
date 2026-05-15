@@ -3,6 +3,7 @@ import Layout from "../lib/layouts/layout.astro";
 import HeroSection from "../lib/components/organisms/HeroSection.astro";
 import WorkSection from "../lib/components/organisms/WorkSection.astro";
 import AboutSection from "../lib/components/organisms/AboutSection.astro";
+import JournalSection from "../lib/components/organisms/JournalSection.astro";
 
 import { sanityClient } from '../sanity/client';
 
@@ -21,10 +22,18 @@ const about = await sanityClient.fetch(`*[_type == "about"][0] {
   value2,
   value3
 }`);
+
+const journals = await sanityClient.fetch(`*[_type == "journal"] | order(date desc) {
+  date,
+  title,
+  readtime,
+  url
+}`);
 ---
 
 <Layout>
   <HeroSection />
   <WorkSection projects={projects} />
   <AboutSection text={about.text} value1={about.value1} value2={about.value2} value3={about.value3} />
+  <JournalSection journals={journals} />
 </Layout>

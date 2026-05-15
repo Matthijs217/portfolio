@@ -1,0 +1,53 @@
+---
+import ArrowLink from '../atoms/ArrowLink.astro';
+
+const { date, title, readTime, href } = Astro.props;
+
+// Knip de string op elke -, en sla het resultaat op in een array
+// Geef naam aan de eerste en tweede in de array
+// Format de datum in maand en jaar
+const [year, month] = date.split('-');
+const formatted = `${month} / ${year}`;
+---
+
+<li class="article-row">
+  <span class="article-row__date text-body">{formatted}</span>
+  <div class="article-row__body">
+    <h3 class="article-row__title text-project">{title}</h3>
+    <span class="article-row__time text-label">{readTime} min</span>
+  </div>
+  <ArrowLink href={href} ariaLabel={`Lees artikel: ${title}`} />
+</li>
+
+<style>
+  .article-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.5rem; /* Boven en Beneden padding */
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .article-row__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .article-row__date,
+  .article-row__time {
+    color: var(--color-muted);
+  }
+
+  .article-row__title {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .article-row__title:hover {
+    color: var(--color-muted);
+  }
+</style>

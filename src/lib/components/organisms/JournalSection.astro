@@ -1,0 +1,50 @@
+---
+import SectionLabel from '../atoms/SectionLabel.astro';
+import ArticleRow from '../molecules/ArticleRow.astro';
+import ArrowLink from '../atoms/ArrowLink.astro';
+
+interface Props {
+  journals: Journal[];
+}
+
+const { journals = [] } = Astro.props;
+
+---
+
+<section class="journal-section" id="journal" >
+  <SectionLabel index="04" title="Journal" />
+
+  <ul class="journal-section__list" >
+    {journals.map((journal, index) => (
+      <ArticleRow
+        date={journal.date}
+        title={journal.title}
+        readTime={journal.readtime}
+        href={journal.url ?? ''}
+      />
+    ))} 
+  </ul>
+
+  
+</section>
+
+<style>
+  .journal-section {
+    padding-inline: 1.5rem;
+    padding-block: 4rem;
+  }
+
+  .journal-section__list {
+    list-style: none;
+  }
+
+  .journal-section__more {
+    padding-top: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .journal-section {
+      padding-inline: 3rem;
+    }
+  }
+</style>
