@@ -14,7 +14,7 @@ const { journals = [] } = Astro.props;
   <SectionLabel index="04" title="Journal" />
 
   <ul class="journal-section__list" >
-    {journals.map((journal, index) => (
+    {journals.map((journal) => (
       <ArticleRow
         date={journal.date}
         title={journal.title}
