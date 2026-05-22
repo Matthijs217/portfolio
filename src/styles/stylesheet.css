@@ -49,10 +49,10 @@ html, body {
     --text-body:     clamp(0.875rem, 1.2vw, 1rem);   /* ~16px max  */
     --text-accent:   clamp(0.8rem,  1vw,  0.9375rem);/* ~15px max  */
     --text-cta:      clamp(0.6875rem, 0.8vw, 0.8125rem);
-    --text-nav:      clamp(0.625rem, 0.7vw, 0.75rem);
-    --text-name:     clamp(1rem,    1.5vw, 1.375rem);
+    --text-nav:      clamp(0.875rem, 0.9vw, 1rem);     /* ~14-16px   */
+    --text-name:     clamp(1.3rem,    1.5vw, 1.375rem);
     --text-email:    clamp(0.875rem, 1.2vw, 1.125rem);
-    --text-label:    clamp(0.6875rem, 0.8vw, 0.8125rem); /* ~13px max  */
+    --text-label:    clamp(0.875rem, 0.8vw, 0.9375rem);  /* ~14-15px   */
 
   }
 

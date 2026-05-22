@@ -21,10 +21,6 @@ const { text, value1, value2, value3 } = Astro.props;
       </ul>
     </div>
   </div>
-
-  <p class="about-section__footer text-label">
-    Est. 2006 · Based in Amsterdam · Working worldwide
-  </p>
 </section>
 
 <style>
@@ -59,12 +55,6 @@ const { text, value1, value2, value3 } = Astro.props;
 
   .about-section__value:nth-child(2) { opacity: 0.8; }
   .about-section__value:nth-child(3) { opacity: 0.6; }
-
-  .about-section__footer {
-    color: var(--color-muted);
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-divider);
-  }
 
   @media (min-width: 700px) {
     .about-section {
