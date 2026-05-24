@@ -73,3 +73,12 @@ const links = [
     }
   }
 </style>
+
+<script>
+  const details = document.querySelector('.nav-mobile');
+  details.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      details.open = false;
+    });
+  });
+</script>
